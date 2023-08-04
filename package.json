@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "dependencies": {
+    "dockerode": "^3.3.5",
+    "dockerode-compose": "^1.3.3",
+    "express": "^4.18.2"
+  },
+  "scripts": {
+    "1broker": "docker compose -f 1broker.yml up",
+    "3broker": "docker compose -f 3broker.yml up",
+    "5broker": "docker compose -f 5broker.yml up"
+  }
+}
