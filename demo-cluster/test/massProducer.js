@@ -1,4 +1,4 @@
-import { Kafka, logLevel, Producer, Admin, CompressionTypes } from 'kafkajs';
+import { Kafka, logLevel, CompressionTypes } from 'kafkajs';
 
 const kafka = new Kafka({
   clientId: 'test-producer-mass',
@@ -6,11 +6,11 @@ const kafka = new Kafka({
   logLevel: logLevel.WARN,
 });
 
-const admin: Admin = kafka.admin();
-const producer: Producer = kafka.producer();
+const admin = kafka.admin();
+const producer= kafka.producer();
 const topic = 'test-topic';
 
-const run = async (): Promise<void> => {
+const run = async () => {
   // connect the admin and create a topic if it hasn't already been created
   await admin.connect();
   const topicsList = await admin.listTopics();
@@ -26,8 +26,8 @@ const run = async (): Promise<void> => {
   await admin.disconnect();
 
   // Produce an arbitrary but large number of messages to the topic 'test-topic'
-  const randomNumberBetween = (min: number, max: number): number => Math.floor(Math.random() * (max - min) + min);
-  let number: number = randomNumberBetween(5000, 10000);
+  const randomNumberBetween = (min, max) => Math.floor(Math.random() * (max - min) + min);
+  let number = randomNumberBetween(5000, 10000);
 
   await producer.connect();
   while (number > 0) {

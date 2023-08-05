@@ -6,9 +6,9 @@ const kafka = new Kafka({
   logLevel: logLevel.WARN,
 });
 
-const consumer: Consumer = kafka.consumer({ groupId: 'test-group' });
+const consumer = kafka.consumer({ groupId: 'test-group' });
 
-const run = async (): Promise<void> => {
+const run = async ()=> {
   // connect the consumer
   await consumer.connect();
   // subscribe consumer to the topic created in producer.ts

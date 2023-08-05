@@ -1,4 +1,4 @@
-import { Kafka, logLevel, Producer, Admin, CompressionTypes } from 'kafkajs';
+import { Kafka, logLevel, CompressionTypes } from 'kafkajs';
 
 const kafka = new Kafka({
   clientId: 'test-producer',
@@ -6,22 +6,17 @@ const kafka = new Kafka({
   logLevel: logLevel.WARN,
 });
 
-interface TestMessage {
-  key: string,
-  value: string,
-}
-
-const admin: Admin = kafka.admin();
-const producer: Producer = kafka.producer();
+const admin = kafka.admin();
+const producer = kafka.producer();
 const topic = 'test-topic';
 
-const getRandomNumber = (): number => Math.round(Math.random() * 1000)
-export const createMessage = (num: number): TestMessage => ({
+const getRandomNumber = () => Math.round(Math.random() * 1000)
+export const createMessage = (num) => ({
   key: `key-${num}`,
   value: `value-${num}-${new Date().toISOString()}`,
 })
 
-const sendMessage = (): Promise<void> => {
+const sendMessage = () => {
   return producer
     .send({
       topic,
@@ -35,7 +30,7 @@ const sendMessage = (): Promise<void> => {
     .catch(e => console.error(`[example/producer] ${e.message}`, e))
 }
 
-const run = async (): Promise<void> => {
+const run = async () => {
   // connect the admin and create a topic if it hasn't already been created
   await admin.connect();
   const clusterInfo = await admin.describeCluster();

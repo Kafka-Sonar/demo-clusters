@@ -3,11 +3,18 @@
   "dependencies": {
     "dockerode": "^3.3.5",
     "dockerode-compose": "^1.3.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "kafkajs": "^2.2.4"
   },
   "scripts": {
     "1broker": "docker compose -f 1broker.yml up",
     "3broker": "docker compose -f 3broker.yml up",
-    "5broker": "docker compose -f 5broker.yml up"
+    "5broker": "docker compose -f 5broker.yml up",
+    "producer": "node demo-cluster/test/producer.js",
+    "mass-producer": "node demo-cluster/test/massProducer.js",
+    "consumer": "node demo-cluster/test/consumer.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.7"
   }
 }
