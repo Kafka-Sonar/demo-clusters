@@ -1,4 +1,4 @@
-import { Kafka, logLevel, Consumer } from 'kafkajs';
+import { Kafka, logLevel } from 'kafkajs';
 
 const kafka = new Kafka({
   clientId: 'test-consumer',
