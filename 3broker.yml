@@ -22,6 +22,11 @@ services:
       KAFKA_HEAP_OPTS: '-Xmx512M -Xms512M'
     volumes:
       - ./demo-cluster/configs/jmx-exporter:/demo-cluster/configs/jmx-exporter
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "localhost", "2181"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   kafka1:
     image: confluentinc/cp-kafka:7.4.0
@@ -31,7 +36,8 @@ services:
     ports:
       - '9091:9091'
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -43,6 +49,11 @@ services:
       KAFKA_HEAP_OPTS: '-Xmx512M -Xms512M'
     volumes:
       - ./demo-cluster/configs/jmx-exporter:/demo-cluster/configs/jmx-exporter
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "localhost", "9091"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   kafka2:
     image: confluentinc/cp-kafka:7.4.0
@@ -52,7 +63,8 @@ services:
     ports:
       - '8098:8098'
     depends_on:
-      - zookeeper
+      kafka1:
+        condition: service_healthy
     environment:
       KAFKA_BROKER_ID: 2
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -64,6 +76,11 @@ services:
       KAFKA_HEAP_OPTS: '-Xmx512M -Xms512M'
     volumes:
       - ./demo-cluster/configs/jmx-exporter:/demo-cluster/configs/jmx-exporter
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "localhost", "8098"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   kafka3:
     image: confluentinc/cp-kafka:7.4.0
@@ -73,7 +90,8 @@ services:
     ports:
       - '8099:8099'
     depends_on:
-      - zookeeper
+      kafka2:
+        condition: service_healthy
     environment:
       KAFKA_BROKER_ID: 3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -85,3 +103,8 @@ services:
       KAFKA_HEAP_OPTS: '-Xmx512M -Xms512M'
     volumes:
       - ./demo-cluster/configs/jmx-exporter:/demo-cluster/configs/jmx-exporter
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "localhost", "8099"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
